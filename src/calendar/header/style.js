@@ -17,6 +17,7 @@ export default function (theme = {}) {
             paddingHorizontal: 15
         },
         headerContainer: {
+            gap: -3,
             flexDirection: 'row'
         },
         monthText: {
@@ -53,7 +54,7 @@ export default function (theme = {}) {
             paddingRight: 0
         },
         dayHeader: {
-            marginTop: 2,
+            marginTop: -5,
             marginBottom: 7,
             width: 32,
             textAlign: 'center',

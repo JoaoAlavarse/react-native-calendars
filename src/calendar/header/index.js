@@ -89,7 +89,7 @@ const CalendarHeader = forwardRef((props, ref) => {
         let monthFormatted = formatNumbers(month?.toString(monthFormat))
         let monthWithoutYear = monthFormatted.split(" ")[0]
         return (<Fragment>
-        <Text allowFontScaling={false} style={[style.current.monthText, {position: "relative", right: 10}]} testID={`${testID}.title`} {...webProps}>
+        <Text allowFontScaling={false} style={[style.current.monthText, { marginBottom: -0 ,position: "relative", right: 10}]} testID={`${testID}.title`} {...webProps}>
           {monthWithoutYear}
         </Text>
       </Fragment>);
@@ -127,7 +127,7 @@ const CalendarHeader = forwardRef((props, ref) => {
     return (<View testID={testID} style={propsStyle} accessible accessibilityRole={'adjustable'} accessibilityActions={accessibilityActions} onAccessibilityAction={onAccessibilityAction} accessibilityElementsHidden={accessibilityElementsHidden} // iOS
      importantForAccessibility={importantForAccessibility} // Android
     >
-      <View style={headerStyle}>
+      <View style={[headerStyle, {marginTop: -5}]}>
         {_renderArrow('left')}
         <View style={style.current.headerContainer}>
           {_renderHeader()}
