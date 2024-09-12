@@ -21,7 +21,7 @@ import BasicDay from './day/basic';
  * @gif: https://github.com/wix/react-native-calendars/blob/master/demo/assets/calendar.gif
  */
 const Calendar = (props) => {
-    const { initialDate, current, theme, markedDates, minDate, maxDate, allowSelectionOutOfRange, onDayPress, onDayLongPress, onMonthChange, onVisibleMonthsChange, disableMonthChange, enableSwipeMonths, hideExtraDays, firstDay, showSixWeeks, displayLoadingIndicator, customHeader, headerStyle, accessibilityElementsHidden, importantForAccessibility, testID, style: propsStyle } = props;
+    const { initialDate, current, theme, markedDates, enableYear, minDate, maxDate, allowSelectionOutOfRange, onDayPress, onDayLongPress, onMonthChange, onVisibleMonthsChange, disableMonthChange, enableSwipeMonths, hideExtraDays, firstDay, showSixWeeks, displayLoadingIndicator, customHeader, headerStyle, accessibilityElementsHidden, importantForAccessibility, testID, style: propsStyle } = props;
     const [currentMonth, setCurrentMonth] = useState(current || initialDate ? parseDate(current || initialDate) : new XDate());
     const style = useRef(styleConstructor(theme));
     const header = useRef();
@@ -45,6 +45,12 @@ const Calendar = (props) => {
     const addMonth = useCallback((count) => {
         const newMonth = currentMonth.clone().addMonths(count, true);
         updateMonth(newMonth);
+    }, [currentMonth, updateMonth]);
+    const addYear = useCallback((count) => {
+
+        const newYear = currentMonth.clone().addYears(count, true);
+
+        updateMonth(newYear);
     }, [currentMonth, updateMonth]);
     const handleDayInteraction = useCallback((date, interaction) => {
         const day = new XDate(date.dateString);
@@ -142,7 +148,7 @@ const Calendar = (props) => {
         const ref = customHeader ? undefined : header;
         const CustomHeader = customHeader;
         const HeaderComponent = customHeader ? CustomHeader : CalendarHeader;
-        return (<HeaderComponent {...headerProps} testID={`${testID}.header`} style={headerStyle} ref={ref} month={currentMonth} addMonth={addMonth} displayLoadingIndicator={shouldDisplayIndicator}/>);
+        return (<HeaderComponent {...headerProps} enableYear={enableYear} testID={`${testID}.header`} style={headerStyle} ref={ref} month={currentMonth} addYear={addYear} addMonth={addMonth} displayLoadingIndicator={shouldDisplayIndicator}/>);
     };
     const GestureComponent = enableSwipeMonths ? GestureRecognizer : View;
     const swipeProps = {

@@ -21,6 +21,12 @@ export interface CalendarHeaderProps {
     hideArrows?: boolean;
     /** Replace default arrows with custom ones (direction can be 'left' or 'right') */
     renderArrow?: (direction: Direction) => ReactNode;
+
+    onLongPressArrowLeft?: (method: () => void, month?: XDate) => void;
+
+    enableYear?: boolean
+
+    onLongPressArrowRight?: (method: () => void, month?: XDate) => void;
     /** Handler which gets executed when press arrow icon left. It receive a callback can go back month */
     onPressArrowLeft?: (method: () => void, month?: XDate) => void;
     /** Handler which gets executed when press arrow icon right. It receive a callback can go next month */

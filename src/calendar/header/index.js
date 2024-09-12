@@ -9,7 +9,9 @@ const accessibilityActions = [
     { name: 'decrement', label: 'decrement' }
 ];
 const CalendarHeader = forwardRef((props, ref) => {
-    const { theme, style: propsStyle, addMonth: propsAddMonth, month, monthFormat, firstDay, hideDayNames, showWeekNumbers, hideArrows, renderArrow, onPressArrowLeft, onPressArrowRight, arrowsHitSlop = 20, disableArrowLeft, disableArrowRight, disabledDaysIndexes, displayLoadingIndicator, customHeaderTitle, renderHeader, webAriaLevel, testID, accessibilityElementsHidden, importantForAccessibility, numberOfDays, current = '', timelineLeftInset } = props;
+    const { theme, style: propsStyle, addMonth: propsAddMonth,  addYear: propsAddYear , enableYear, month, monthFormat, firstDay, hideDayNames, showWeekNumbers, hideArrows, renderArrow, onPressArrowLeft, onLongPressArrowLeft, onLongPressArrowRight, onPressArrowRight, arrowsHitSlop = 20, disableArrowLeft, disableArrowRight, disabledDaysIndexes, displayLoadingIndicator, customHeaderTitle, renderHeader, webAriaLevel, testID, accessibilityElementsHidden, importantForAccessibility, numberOfDays, current = '', timelineLeftInset } = props;
+    console.log("TAA QUI", month)
+
     const numberOfDaysCondition = useMemo(() => {
         return numberOfDays && numberOfDays > 1;
     }, [numberOfDays]);
@@ -31,17 +33,37 @@ const CalendarHeader = forwardRef((props, ref) => {
         onPressRight
     }));
     const addMonth = useCallback(() => {
+        
         propsAddMonth?.(1);
     }, [propsAddMonth]);
     const subtractMonth = useCallback(() => {
         propsAddMonth?.(-1);
     }, [propsAddMonth]);
+
+    const addYear = useCallback(() => {
+        propsAddYear?.(1);
+    }, [propsAddYear]);
+    const subtractYear = useCallback(() => {
+        propsAddYear?.(-1);
+    }, [propsAddYear]);
     const onPressLeft = useCallback(() => {
         if (typeof onPressArrowLeft === 'function') {
             return onPressArrowLeft(subtractMonth, month);
         }
         return subtractMonth();
     }, [onPressArrowLeft, subtractMonth, month]);
+    const onLongPressLeft = useCallback(() => {
+        if (typeof onLongPressArrowLeft === 'function') {
+            return onLongPressArrowLeft(subtractYear, month);
+        }
+        return subtractYear();
+    }, [onLongPressArrowLeft, subtractYear, month]);
+    const onLongPressRight = useCallback(() => {
+        if (typeof onLongPressArrowRight === 'function') {
+            return onLongPressArrowRight(addYear, month);
+        }
+        return addYear();
+    }, [onLongPressArrowRight, addYear, month]);
     const onPressRight = useCallback(() => {
         if (typeof onPressArrowRight === 'function') {
             return onPressArrowRight(addMonth, month);
@@ -90,7 +112,7 @@ const CalendarHeader = forwardRef((props, ref) => {
         let monthWithoutYear = monthFormatted.split(" ")[0]
         return (<Fragment>
         <Text allowFontScaling={false} style={[style.current.monthText, { marginBottom: -0 ,position: "relative", right: 10}]} testID={`${testID}.title`} {...webProps}>
-          {monthWithoutYear}
+          { enableYear ? monthFormatted :monthWithoutYear}
         </Text>
       </Fragment>);
     };
@@ -102,9 +124,10 @@ const CalendarHeader = forwardRef((props, ref) => {
         const arrowId = isLeft ? 'leftArrow' : 'rightArrow';
         const shouldDisable = isLeft ? disableArrowLeft : disableArrowRight;
         const onPress = !shouldDisable ? isLeft ? onPressLeft : onPressRight : undefined;
+        const onLongPress = !shouldDisable ? isLeft ? onLongPressLeft : onLongPressRight : undefined;
         const imageSource = isLeft ? require('../img/previous.png') : require('../img/next.png');
         const renderArrowDirection = isLeft ? 'left' : 'right';
-        return (<TouchableOpacity onPress={onPress} disabled={shouldDisable} style={style.current.arrow} hitSlop={hitSlop} testID={`${testID}.${arrowId}`}>
+        return (<TouchableOpacity  onPress={onPress} onLongPress={onLongPress} disabled={shouldDisable} style={style.current.arrow} hitSlop={hitSlop} testID={`${testID}.${arrowId}`}>
         {renderArrow ? (renderArrow(renderArrowDirection)) : (<Image source={imageSource} style={shouldDisable ? style.current.disabledArrowImage : style.current.arrowImage}/>)}
       </TouchableOpacity>);
     };
