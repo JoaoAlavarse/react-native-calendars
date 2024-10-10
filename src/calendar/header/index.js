@@ -52,16 +52,26 @@ const CalendarHeader = forwardRef((props, ref) => {
         return subtractMonth();
     }, [onPressArrowLeft, subtractMonth, month]);
     const onLongPressLeft = useCallback(() => {
-        if (typeof onLongPressArrowLeft === 'function') {
-            return onLongPressArrowLeft(subtractYear, month);
-        }
-        return subtractYear();
+        const [startRepeating, stopRepeating] = useRepeatOnLongPress(() => {
+            if (typeof onLongPressArrowLeft === 'function') {
+                onLongPressArrowLeft(subtractYear, month);
+            } else {
+                subtractYear();
+            }
+        });
+    
+        return startRepeating;
     }, [onLongPressArrowLeft, subtractYear, month]);
     const onLongPressRight = useCallback(() => {
-        if (typeof onLongPressArrowRight === 'function') {
-            return onLongPressArrowRight(addYear, month);
-        }
-        return addYear();
+        const [startRepeating, stopRepeating] = useRepeatOnLongPress(() => {
+            if (typeof onLongPressArrowRight === 'function') {
+                onLongPressArrowRight(addYear, month);
+            } else {
+                addYear();
+            }
+        });
+    
+        return startRepeating;
     }, [onLongPressArrowRight, addYear, month]);
     const onPressRight = useCallback(() => {
         if (typeof onPressArrowRight === 'function') {
@@ -81,6 +91,27 @@ const CalendarHeader = forwardRef((props, ref) => {
                 break;
         }
     }, [onPressLeft, onPressRight]);
+    const useRepeatOnLongPress = (callback, delay = 200) => {
+        const intervalId = useRef(null);
+    
+        const startRepeating = useCallback(() => {
+            if (!intervalId.current) {
+                intervalId.current = setInterval(callback, delay);
+            }
+        }, [callback, delay]);
+    
+        const stopRepeating = useCallback(() => {
+            if (intervalId.current) {
+                clearInterval(intervalId.current);
+                intervalId.current = null;
+            }
+        }, []);
+    
+        return [startRepeating, stopRepeating];
+    };
+    const onRelease = useCallback(() => {
+        stopRepeating();
+    }, [stopRepeating]);
     const renderWeekDays = useMemo(() => {
         const dayOfTheWeek = new XDate(current).getDay();
         const weekDaysNames = numberOfDaysCondition ? weekDayNames(dayOfTheWeek) : weekDayNames(firstDay);
@@ -126,7 +157,7 @@ const CalendarHeader = forwardRef((props, ref) => {
         const onLongPress = !shouldDisable ? isLeft ? onLongPressLeft : onLongPressRight : undefined;
         const imageSource = isLeft ? require('../img/previous.png') : require('../img/next.png');
         const renderArrowDirection = isLeft ? 'left' : 'right';
-        return (<TouchableOpacity  onPress={onPress} onLongPress={onLongPress} disabled={shouldDisable} style={style.current.arrow} hitSlop={hitSlop} testID={`${testID}.${arrowId}`}>
+        return (<TouchableOpacity  onPress={onPress} onLongPress={onLongPress} onPressOut={onRelease} disabled={shouldDisable} style={style.current.arrow} hitSlop={hitSlop} testID={`${testID}.${arrowId}`}>
         {renderArrow ? (renderArrow(renderArrowDirection)) : (<Image source={imageSource} style={shouldDisable ? style.current.disabledArrowImage : style.current.arrowImage}/>)}
       </TouchableOpacity>);
     };
