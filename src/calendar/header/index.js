@@ -10,7 +10,7 @@ const accessibilityActions = [
 ];
 const CalendarHeader = forwardRef((props, ref) => {
     const { theme, style: propsStyle, addMonth: propsAddMonth,  addYear: propsAddYear , enableYear, month, monthFormat, firstDay, hideDayNames, showWeekNumbers, hideArrows, renderArrow, onPressArrowLeft, onLongPressArrowLeft, onLongPressArrowRight, onPressArrowRight, arrowsHitSlop = 20, disableArrowLeft, disableArrowRight, disabledDaysIndexes, displayLoadingIndicator, customHeaderTitle, renderHeader, webAriaLevel, testID, accessibilityElementsHidden, importantForAccessibility, numberOfDays, current = '', timelineLeftInset } = props;
-
+const stopRepeating = () => {}
     const numberOfDaysCondition = useMemo(() => {
         return numberOfDays && numberOfDays > 1;
     }, [numberOfDays]);
