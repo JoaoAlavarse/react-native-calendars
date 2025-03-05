@@ -36,15 +36,7 @@ export function extractComponentProps(component: any, props: any, ignoreProps?: 
 }
 
 export function extractDotProps(props: MarkingProps) {
-  const {
-    theme,
-    color,
-    marked,
-    selected,
-    disabled,
-    inactive,
-    today
-  } = props;
+  const {theme, color, marked, selected, disabled, inactive, today} = props;
 
   const dotProps = {
     theme,
@@ -109,6 +101,7 @@ export function extractHeaderProps(props: CalendarProps) {
     disableArrowRight,
     disabledDaysIndexes,
     renderHeader,
+    styleMonth,
     customHeaderTitle,
     webAriaLevel,
     numberOfDays,
@@ -126,6 +119,7 @@ export function extractHeaderProps(props: CalendarProps) {
     showWeekNumbers,
     monthFormat,
     hideDayNames,
+    styleMonth,
     hideArrows,
     renderArrow,
     onPressArrowLeft,
@@ -171,7 +165,6 @@ export function extractCalendarProps(props: CalendarListProps) {
 }
 
 export function extractCalendarListProps(props: AgendaProps) {
-
   const {
     // Agenda props
     loadItemsForMonth,
@@ -234,7 +227,7 @@ export function extractReservationListProps(props: AgendaProps) {
     rowHasChanged,
     renderDay,
     renderItem,
-    renderEmptyDate,
+    renderEmptyDate
   } = props;
 
   const ReservationListProps = {
@@ -261,22 +254,14 @@ export function extractReservationListProps(props: AgendaProps) {
     rowHasChanged,
     renderDay,
     renderItem,
-    renderEmptyDate,
+    renderEmptyDate
   };
 
   return ReservationListProps;
 }
 
 export function extractReservationProps(props: ReservationListProps) {
-  const {
-    date,
-    item,
-    theme,
-    rowHasChanged,
-    renderDay,
-    renderItem,
-    renderEmptyDate
-  } = props;
+  const {date, item, theme, rowHasChanged, renderDay, renderItem, renderEmptyDate} = props;
 
   const reservationProps = {
     date,
