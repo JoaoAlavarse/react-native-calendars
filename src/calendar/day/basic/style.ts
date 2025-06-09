@@ -16,7 +16,7 @@ export default function styleConstructor(theme: Theme = {}) {
       alignItems: 'center'
     },
     text: {
-      marginTop: constants.isAndroid ? 4 : 6,
+      marginTop: constants.isAndroid ? 8 : 8,
       fontSize: appStyle.textDayFontSize,
       fontFamily: appStyle.textDayFontFamily,
       fontWeight: appStyle.textDayFontWeight,

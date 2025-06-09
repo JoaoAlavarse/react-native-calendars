@@ -15,7 +15,7 @@ export default function styleConstructor(theme = {}) {
         },
         text: {
         
-            marginTop: constants.isAndroid ? 6 : 6,
+            marginTop: constants.isAndroid ? 8 : 8,
             fontSize: appStyle.textDayFontSize,
             fontFamily: appStyle.textDayFontFamily,
             fontWeight: appStyle.textDayFontWeight,
